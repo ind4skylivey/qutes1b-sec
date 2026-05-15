@@ -89,7 +89,6 @@ c.qt.chromium.process_model = 'process-per-site-instance'
 
 # Cache settings
 c.content.cache.size = 134217728  # 128MB
-c.content.cache.appcache = True
 
 # Enable smooth scrolling
 c.scrolling.smooth = True
@@ -160,13 +159,13 @@ c.bindings.commands['normal'] = {
     'gM': 'tab-move -1',
 
     # URL operations
-    'o': 'set-cmd-text -s :open',
-    'O': 'set-cmd-text :open {url}',
-    'go': 'set-cmd-text :open {url}',
+    'o': 'cmd-set-text -s :open',
+    'O': 'cmd-set-text :open {url}',
+    'go': 'cmd-set-text :open {url}',
 
     # Search
-    '/': 'set-cmd-text /',
-    '?': 'set-cmd-text ?',
+    '/': 'cmd-set-text /',
+    '?': 'cmd-set-text ?',
     'n': 'search-next',
     'N': 'search-prev',
 
@@ -302,14 +301,14 @@ c.colors.hints.bg = 'rgba(255, 0, 60, 0.9)'
 c.colors.hints.fg = '#ffffff'
 c.colors.hints.match.fg = '#00ffff'
 
-# Completion menu (Premium Glass)
-c.colors.completion.category.bg = 'rgba(10, 10, 15, 0.6)'
+# Completion menu (Premium Glass - Fixed opacity for visibility)
+c.colors.completion.category.bg = '#0a0a0f'
 c.colors.completion.category.fg = '#ff003c'
-c.colors.completion.even.bg = 'rgba(255, 255, 255, 0.03)'
-c.colors.completion.odd.bg = 'rgba(0, 0, 0, 0.2)'
+c.colors.completion.even.bg = '#14141e'
+c.colors.completion.odd.bg = '#0f0f19'
 c.colors.completion.fg = '#e5e7eb'
 c.colors.completion.match.fg = '#ff003c'
-c.colors.completion.item.selected.bg = 'rgba(255, 0, 60, 0.3)'
+c.colors.completion.item.selected.bg = '#ff003c'
 c.colors.completion.item.selected.fg = '#ffffff'
 
 # Messages (Premium)
