@@ -1,0 +1,43 @@
+<!-- Interactive Terminal Component -->
+<div class="terminal-section">
+  <div class="panel-card" style="min-height: 250px;">
+    <div class="flex items-center justify-between mb-3 pb-3 border-b border-[var(--color-border-subtle)]">
+      <div class="flex items-center gap-3">
+        <h3 class="text-[var(--color-text-accent)] font-bold uppercase tracking-wider text-sm">
+          /// INTERACTIVE_TERMINAL
+        </h3>
+        <span class="badge">LIVE</span>
+      </div>
+      <button class="terminal-clear text-xs px-2 py-1 bg-[var(--color-bg-body)] border border-[var(--color-border-subtle)]
+                     rounded text-[var(--color-text-muted)] hover:text-[var(--color-text-accent)]
+                     transition-colors font-mono">
+        CLEAR
+      </button>
+    </div>
+
+    <div class="terminal-output flex-1 overflow-y-auto max-h-[200px] mb-3 font-mono text-sm"
+         id="terminal-output">
+      <!-- Terminal output lines -->
+    </div>
+
+    <!-- Command suggestions dropdown -->
+    <div class="command-suggestions bg-[var(--color-bg-body)] border border-[var(--color-border-subtle)]
+             rounded-lg max-h-40 overflow-y-auto hidden z-50 text-sm"
+         id="command-suggestions">
+      <!-- Suggestions rendered here -->
+    </div>
+
+    <!-- Terminal input -->
+    <div class="terminal-input-line flex items-center gap-2">
+      <span class="terminal-prompt text-[var(--color-text-accent)] font-mono text-sm">root@S1BGr0up:~#</span>
+      <input type="text"
+             class="terminal-input flex-1 bg-transparent border-none
+                    text-[var(--color-text-primary)] font-mono text-sm
+                    focus:ring-0"
+             placeholder="Type 'help' for available commands..."
+             autocomplete="off"
+             spellcheck="false"
+             id="terminal-input">
+    </div>
+  </div>
+</div>

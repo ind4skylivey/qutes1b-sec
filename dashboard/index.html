@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="S1BGr0up Cyber Arsenal Dashboard - Red Team Operations">
+    <meta name="author" content="S1BGr0up">
+    <title>S1BGr0up | CYBER ARSENAL</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="antialiased">
+
+    <!-- Background Effects -->
+    <canvas id="particles-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+    <canvas id="matrix-canvas" class="fixed inset-0 z-0 pointer-events-none opacity-10"></canvas>
+
+    <!-- Header -->
+    <!-- Header Component -->
+<header class="header sticky top-0 z-40 bg-[var(--color-bg-body)] border-b border-[var(--color-border-subtle)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex flex-col items-center justify-between gap-4">
+      <!-- Title Section -->
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-black tracking-tighter text-[var(--color-text-primary)]
+                    mb-1 animate-fade-in uppercase italic">
+          S1BARCH<span class="text-[var(--color-red)]">.</span>CYBER_OPS
+        </h1>
+        <p class="text-[var(--color-text-muted)] text-xs md:text-sm font-mono uppercase tracking-[0.3em]">
+          // Red Teaming & Sec Arch // Identity: <span class="text-[var(--color-red)]">Verified</span>
+        </p>
+      </div>
+
+      <!-- Status Bar -->
+      <div class="flex flex-wrap items-center justify-center gap-4 md:gap-8
+                  text-[10px] md:text-xs font-mono uppercase tracking-widest font-bold">
+        <div class="status-item flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-neon-green)] animate-pulse shadow-[0_0_10px_var(--color-neon-green)]"></span>
+          <span class="text-[var(--color-text-muted)]">STATUS:</span>
+          <span class="text-[var(--color-neon-green)]">OPERATIONAL</span>
+        </div>
+
+        <div class="status-item flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-cyan)] shadow-[0_0_10px_var(--color-cyan)]"></span>
+          <span class="text-[var(--color-text-muted)]">VPN:</span>
+          <span class="text-[var(--color-cyan)]">ACTIVE</span>
+        </div>
+
+        <div class="status-item flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-magenta)] shadow-[0_0_10px_var(--color-magenta)]"></span>
+          <span class="text-[var(--color-text-muted)]">CORE:</span>
+          <span class="text-[var(--color-magenta)]">ENCRYPTED</span>
+        </div>
+
+        <div class="clock-display" id="clock" class="text-[var(--color-text-accent)]">
+          --:--:--
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="badge variant='oscp'">OSCP CERTIFIED</span>
+        <span class="badge variant='redteam'">RED TEAM</span>
+        <span class="badge variant='rust'">RUST</span>
+        <span class="badge">S1B-TEAM</span>
+        <span class="badge">C2 DEV</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+    <!-- Widgets Bar -->
+    <!-- Widgets Bar Component -->
+<div class="widgets-bar bg-[var(--color-bg-body)] border-b border-[var(--color-border-subtle)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+      <!-- Clock: London -->
+      <div class="w-full md:w-auto">
+        <div class="widget-box text-center">
+          <div class="widget-header">🇬🇧 LONDON</div>
+          <div class="clock-display text-lg md:text-xl font-bold text-[var(--color-text-accent)]"
+               id="london-clock">
+            --:--:--
+          </div>
+        </div>
+      </div>
+
+      <!-- Clock: Thailand -->
+      <div class="w-full md:w-auto">
+        <div class="widget-box text-center">
+          <div class="widget-header">🇹🇭 THAILAND</div>
+          <div class="clock-display text-lg md:text-xl font-bold text-[var(--color-text-accent)]"
+               id="thailand-clock">
+            --:--:--
+          </div>
+        </div>
+      </div>
+
+      <!-- System Stats -->
+      <div class="w-full md:flex-1 md:max-w-xs">
+        <div class="widget-box">
+          <div class="widget-header">🖥 SYSTEM STATS</div>
+          <div class="system-stats grid grid-cols-2 gap-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-[var(--color-text-muted)]">CPU</span>
+                <span class="text-[var(--color-text-primary)]" id="cpu-value">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill bg-[var(--color-text-accent)]"
+                     style="width: 0%"
+                     id="cpu-bar"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-[var(--color-text-muted)]">RAM</span>
+                <span class="text-[var(--color-text-primary)]" id="ram-value">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill bg-[var(--color-text-accent)]"
+                     style="width: 0%"
+                     id="ram-bar"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-[var(--color-border-subtle)]" id="hardware-info"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Main Grid -->
+    <!-- Main Grid Layout -->
+<main class="main-grid max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Featured Project Section -->
+    <div class="featured-project col-span-1 md:col-span-2 lg:col-span-3">
+      <div class="panel-card !border-[var(--color-purple)]">
+        <div class="card-header !bg-[rgba(157,80,255,0.05)] !border-[rgba(157,80,255,0.2)]">
+          <span class="title-icon !text-[var(--color-purple)]">[*]</span>
+          <span class="title-text !text-[var(--color-purple)]">// FEATURED_OPERATION [ACTIVE]</span>
+          <span class="status-indicator border-[var(--color-purple)] text-[var(--color-purple)]">STABLE_RELEASE</span>
+        </div>
+        <div class="p-6 flex items-start gap-6">
+          <div class="flex-shrink-0">
+            <div class="w-16 h-16 rounded-lg bg-[rgba(157,80,255,0.1)] border border-[var(--color-purple)]
+                         flex items-center justify-center shadow-[0_0_15px_rgba(157,80,255,0.1)] group">
+              <svg class="w-10 h-10 text-[var(--color-purple)] group-hover:rotate-12 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 2L3 7v9c0 5 9 6 9 6s9-1 9-6V7l-9-5z" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <h2 class="text-2xl font-black text-[var(--color-text-primary)] tracking-tighter uppercase italic">
+                int3rceptor
+              </h2>
+            </div>
+            <p class="text-[var(--color-text-muted)] text-base mb-4 leading-relaxed font-medium">
+              Next-generation HTTP/HTTPS intercepting proxy. Built with Rust for high-performance backend networking and Vue.js for a reactive frontend.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tool-btn">rust_backend</span>
+              <span class="tool-btn">vue_frontend</span>
+              <span class="tool-btn">network_lib</span>
+            </div>
+          </div>
+
+          <div class="flex-shrink-0">
+            <a href="https://github.com/S1b-Team/int3rceptor" target="_blank" rel="noopener noreferrer"
+               class="tool-btn !text-[var(--color-cyan)] !border-[var(--color-cyan)] hover:!bg-[var(--color-cyan)] hover:!text-black">
+              SOURCE_CODE ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="search-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-start justify-center pt-20">
+      <div class="w-full max-w-2xl">
+        <input type="text" id="search-input" placeholder="Search links, commands, panels..." 
+               class="w-full bg-black border border-[var(--color-cyan)] text-[var(--color-text-primary)] p-3 font-mono rounded mb-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]">
+        <div id="search-results" class="bg-black border border-[var(--color-cyan)] rounded max-h-96 overflow-y-auto"></div>
+      </div>
+    </div>
+
+    <!-- ADD NODE MODAL -->
+    <div id="node-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+      <div class="bg-black border border-[var(--color-cyan)] rounded p-6 max-w-md w-full">
+        <h2 class="text-[var(--color-cyan)] font-bold mb-4">Add Node</h2>
+        <input type="text" id="node-url" placeholder="URL" class="w-full bg-black border border-[var(--color-cyan)]/30 text-[var(--color-text-primary)] p-2 mb-2 font-mono rounded text-xs focus:outline-none focus:border-[var(--color-cyan)]">
+        <input type="text" id="node-label" placeholder="Label" class="w-full bg-black border border-[var(--color-cyan)]/30 text-[var(--color-text-primary)] p-2 mb-4 font-mono rounded text-xs focus:outline-none focus:border-[var(--color-cyan)]">
+        <div class="flex gap-2">
+          <button id="node-save" class="flex-1 bg-[var(--color-cyan)] text-black py-2 rounded text-xs font-bold hover:bg-[var(--color-cyan)]/80">SAVE</button>
+          <button id="node-cancel" class="flex-1 bg-black border border-[var(--color-cyan)] text-[var(--color-cyan)] py-2 rounded text-xs font-bold hover:bg-[var(--color-cyan)]/10">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FREQUENT NODES (Visual Grid from Zen Browser) -->
+    <div class="col-span-3 mt-4">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-mono text-[var(--color-text-muted)]">VISUAL_NODES</span>
+        <button id="add-node-btn" class="text-[10px] px-2 py-1 border border-[var(--color-cyan)] text-[var(--color-cyan)] hover:bg-[var(--color-cyan)] hover:text-black transition-colors">[+]</button>
+      </div>
+      <div class="node-grid">
+        <a href="https://www.youtube.com/" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z" />
+            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+          </svg>
+          <span class="node-label">Youtube_Feed</span>
+        </a>
+
+        <a href="https://ind4skylivey.carrd.co/" class="visual-node high-priority">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span class="node-label">S1B_Identity</span>
+        </a>
+
+        <a href="https://www.codewars.com/" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+          <span class="node-label">Codewars_Kata</span>
+        </a>
+
+        <a href="https://drive.google.com/drive/home" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 10v6M2 10l10-7 10 7M2 10v6M12 21l-10-5M12 21l10-5" />
+          </svg>
+          <span class="node-label">Google_Archive</span>
+        </a>
+
+        <a href="https://drive.proton.me/" class="visual-node high-priority">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          <span class="node-label">Proton_Vault</span>
+        </a>
+
+        <a href="https://www.twitch.tv/" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 2H3v16h5v4l4-4h5l4-4V2zm-10 9V7m5 4V7" />
+          </svg>
+          <span class="node-label">Twitch_Signal</span>
+        </a>
+
+        <a href="https://www.lesswrong.com/" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <span class="node-label">Less_Wrong</span>
+        </a>
+
+        <a href="https://cyberspace.online/feed" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+          <span class="node-label">Cyberspace_Online</span>
+        </a>
+
+        <a href="https://codeberg.org/explore/repos" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 19h20L12 2zM12 14l-4 5h8l-4-5z" />
+          </svg>
+          <span class="node-label">Codeberg_Explorer</span>
+        </a>
+
+        <a href="https://gitlab.com" class="visual-node">
+          <svg class="node-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m22.68 12.56-.89-2.73-2.02-6.19a.57.57 0 0 0-.54-.39.58.58 0 0 0-.54.39l-2.02 6.19H7.33l-2.02-6.19a.58.58 0 0 0-.54-.39.57.57 0 0 0-.54.39l-2.02 6.19-.89 2.73a.81.81 0 0 0 .29.9l10.41 7.56 10.41-7.56a.81.81 0 0 0 .29-.9" />
+          </svg>
+          <span class="node-label">Gitlab_Archive</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="panel-card" data-panel-id="identity-hub">
+      <div class="card-header">
+        <span class="title-icon">[#]</span>
+        <span class="title-text">// IDENTITY_LINK_HUB [ROOT]</span>
+        <span class="status-indicator border-[var(--color-magenta)] text-[var(--color-magenta)]">VERIFIED</span>
+      </div>
+      <div class="panel-content p-4">
+        <ul class="link-list space-y-1">
+          <li class="link-item">
+            <a href="https://github.com/ind4skylivey" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(186,104,200,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-magenta)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">github_central</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://ind4skylivey.github.io/about/" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(186,104,200,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-magenta)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">personal_dossier</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://steamcommunity.com/id/ind4skylivey/" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(186,104,200,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-magenta)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">gaming_steam</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://myanimelist.net/profile/indaskylivey" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(186,104,200,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-magenta)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">animelist_data</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Neural Net Section -->
+    <div class="panel-card" data-panel-id="neural-net">
+      <div class="card-header">
+        <span class="title-icon">[#]</span>
+        <span class="title-text">// NEURAL_NET [AI_AGENTS]</span>
+        <span class="status-indicator border-[var(--color-cyan)] text-[var(--color-cyan)]">ACTIVE</span>
+      </div>
+      <div class="panel-content p-4">
+        <ul class="link-list space-y-1">
+          <li class="link-item">
+            <a href="https://ollama.ai" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(0,229,255,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-cyan)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">ollama_local</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(0,229,255,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-cyan)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">perplexity_ai</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://kimi.moonshot.cn" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(0,229,255,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-cyan)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">kimi_intelligence</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Intel Gathering Section -->
+    <div class="panel-card !border-[var(--color-red)]" data-panel-id="intel-gathering">
+      <div class="card-header !bg-[rgba(255,42,42,0.05)] !border-[rgba(255,42,42,0.2)]">
+        <span class="title-icon !text-[var(--color-red)]">[!]</span>
+        <span class="title-text !text-[var(--color-red)]">// INTEL_GATHERING [PRIORITY]</span>
+        <span class="status-indicator !border-[var(--color-red)] !text-[var(--color-red)]">CRITICAL</span>
+      </div>
+      <div class="panel-content p-4">
+        <ul class="link-list space-y-1">
+          <li class="link-item">
+            <a href="https://shodan.io" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(255,42,42,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-red)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium lowercase">shodan_surface</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://www.exploit-db.com" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(255,42,42,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-red)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium lowercase">exploit_database</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://cve.mitre.org" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(255,42,42,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-red)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium lowercase">vulnerability_repo</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Gamer Grimoire Section -->
+    <div class="panel-card" data-panel-id="gamer-grimoire">
+      <div class="card-header">
+        <span class="title-icon">[#]</span>
+        <span class="title-text">// GAMER_GRIMOIRE [GUIDES]</span>
+        <span class="status-indicator border-[var(--color-amber)] text-[var(--color-amber)]">RESOURCES</span>
+      </div>
+      <div class="panel-content p-4">
+        <ul class="link-list space-y-1">
+          <li class="link-item">
+            <a href="https://github.com/il1v3y/Gamer-Grimoire" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(255,171,64,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-amber)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">fallout_76_vault</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://github.com/il1v3y/Gamer-Grimoire" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(255,171,64,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-amber)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">arc_raiders_intel</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://github.com/il1v3y/Gamer-Grimoire" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(255,171,64,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-amber)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium">icarus_survival_kit</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- System Core Section -->
+    <div class="panel-card" data-panel-id="system-core">
+      <div class="card-header">
+        <span class="title-icon">[#]</span>
+        <span class="title-text">// SYSTEM_CORE [SECURE_COMMS]</span>
+        <span class="status-indicator border-[var(--color-cyan)] text-[var(--color-cyan)]">ENCRYPTED</span>
+      </div>
+      <div class="panel-content p-4">
+        <ul class="link-list space-y-1">
+          <li class="link-item">
+            <a href="https://mail.tutanota.com" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(0,229,255,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-cyan)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium lowercase">tutanota_mailbox</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://wiki.archlinux.org" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(0,229,255,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-cyan)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium lowercase">arch_wiki_data</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Malware Lab Section -->
+    <div class="panel-card" data-panel-id="malware-lab">
+      <div class="card-header">
+        <span class="title-icon">[#]</span>
+        <span class="title-text">// MALWARE_LAB [SANDBOX]</span>
+        <span class="status-indicator border-[var(--color-magenta)] text-[var(--color-magenta)]">SECURE</span>
+      </div>
+      <div class="panel-content p-4">
+        <ul class="link-list space-y-1">
+          <li class="link-item">
+            <span class="text-[var(--color-text-muted)] font-mono text-xs p-2 block hover:text-[var(--color-magenta)] transition-colors">>_ ghidra_sre</span>
+          </li>
+          <li class="link-item">
+            <span class="text-[var(--color-text-muted)] font-mono text-xs p-2 block hover:text-[var(--color-magenta)] transition-colors">>_ ida_pro_analyzer</span>
+          </li>
+          <li class="link-item">
+            <span class="text-[var(--color-text-muted)] font-mono text-xs p-2 block hover:text-[var(--color-magenta)] transition-colors">>_ x64dbg_session</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Toolkit Section -->
+    <div class="panel-card" data-panel-id="toolkit">
+      <div class="card-header">
+        <span class="title-icon">[#]</span>
+        <span class="title-text">// TOOLKIT [CORE_TOOLS]</span>
+        <span class="status-indicator border-[var(--color-purple)] text-[var(--color-purple)]">READY</span>
+      </div>
+      <div class="panel-content p-4">
+        <ul class="link-list space-y-1">
+          <li class="link-item">
+            <a href="https://gchq.github.io/CyberChef/" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(157,80,255,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-purple)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium lowercase">cyberchef_logic</span>
+            </a>
+          </li>
+          <li class="link-item">
+            <a href="https://jwt.io" target="_blank" rel="noopener noreferrer"
+               class="link-anchor flex items-center gap-2 p-2 rounded hover:bg-[rgba(157,80,255,0.03)] group transition-all">
+              <span class="link-icon text-[var(--color-text-muted)] group-hover:text-[var(--color-purple)] font-mono text-xs">>_</span>
+              <span class="link-text font-medium lowercase">jwt_token_auth</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- TODO List Section -->
+    <div class="panel-card !border-[var(--color-red)]" data-panel-id="todo-list">
+      <div class="card-header !bg-[rgba(255,42,42,0.05)] !border-[rgba(255,42,42,0.2)]">
+        <span class="title-icon !text-[var(--color-red)]">[!]</span>
+        <span class="title-text !text-[var(--color-red)]">// TODO_LIST [MISSIONS]</span>
+        <span class="status-indicator !border-[var(--color-red)] !text-[var(--color-red)]">PENDING</span>
+      </div>
+      <div class="panel-content p-4">
+        <div class="todo-container">
+          <div id="todo-list" class="space-y-2 mb-4">
+            <!-- Items -->
+          </div>
+          <div class="flex gap-2">
+            <input type="text" class="todo-input flex-1 bg-black/50 border border-[var(--color-red)]/30 text-xs p-2 focus:border-[var(--color-red)] outline-none" placeholder=">_ NEW_OBJ..." id="todo-input">
+            <button class="tool-btn !border-[var(--color-red)] !text-[var(--color-red)] hover:!bg-[var(--color-red)] hover:!text-black" id="todo-add">ADD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Global Threat Stream Section -->
+    <div class="panel-card !border-[var(--color-neon-green)]" data-panel-id="threat-intel">
+      <div class="card-header !bg-[rgba(57,255,20,0.05)] !border-[rgba(57,255,20,0.2)]">
+        <span class="title-icon !text-[var(--color-neon-green)]">[#]</span>
+        <span class="title-text !text-[var(--color-neon-green)]">// THREAT_INTEL [GLOBAL_STREAM]</span>
+        <span class="status-indicator !border-[var(--color-neon-green)] !text-[var(--color-neon-green)]">MONITORING</span>
+      </div>
+      <div class="panel-content p-4 bg-black/40">
+        <div id="intel-stream" class="h-32 overflow-hidden font-mono text-[9px] leading-relaxed flex flex-col-reverse">
+          <!-- Live events injected via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- S1BARCH Operator Hero Banner (New Full-Width Position) -->
+    <div class="col-span-1 md:col-span-2 lg:col-span-3 mt-4">
+      <div class="panel-card !border-[var(--color-red)] bg-black overflow-hidden" data-panel-id="operator-banner">
+        <div class="card-header !bg-[rgba(255,42,42,0.05)] !border-[rgba(255,42,42,0.2)]">
+          <span class="title-icon !text-[var(--color-red)]">[#]</span>
+          <span class="title-text !text-[var(--color-red)]">// SYSTEM_OPERATOR_ESTABLISHED // DATA_PORTRAIT [S1BARCH]</span>
+          <span class="status-indicator !border-[var(--color-red)] !text-[var(--color-red)]">LEVEL_5_CLEARANCE</span>
+        </div>
+        <div class="relative w-full bg-black flex justify-center items-center group" style="min-height: 250px;">
+          <img src="./assets/operator.png" alt="S1BARCH Operator"
+               class="max-w-4xl w-full h-auto object-contain opacity-70 group-hover:opacity-100 transition-all duration-700
+                      filter grayscale-[0.2] brightness-[0.8] group-hover:grayscale-0 group-hover:brightness-100">
+
+          <!-- Tactical Overlays -->
+          <div class="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none"></div>
+          <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+
+          <div class="absolute bottom-8 left-8 right-8 flex justify-between items-end">
+            <div class="animate-pulse">
+              <div class="text-[10px] font-mono text-[var(--color-red)] uppercase tracking-[0.3em] mb-1">Targeting_Status:</div>
+              <div class="text-2xl font-black text-white uppercase italic tracking-tighter shadow-black text-shadow-lg">
+                MASTERING THE HUNT
+              </div>
+            </div>
+            <div class="text-right font-mono text-[8px] text-[var(--color-red)] opacity-50">
+              [S1B.OS_CORE_LOADED]<br>
+              [BIOMETRIC_SYNC_COMPLETE]<br>
+              [OPERATOR_ACTIVE_NODE_01]
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Terminal (Full Width) -->
+  <div class="terminal-section mt-8">
+    <div class="panel-card !border-[var(--color-neon-green)] !bg-black/90" style="min-height: 250px;">
+      <div class="card-header !bg-[rgba(57,255,20,0.05)] !border-[rgba(57,255,20,0.2)]">
+        <span class="title-icon !text-[var(--color-neon-green)]">[#]</span>
+        <span class="title-text !text-[var(--color-neon-green)]">// INTERACTIVE_TERMINAL [ACTIVE]</span>
+        <button id="terminal-fullscreen" class="text-[9px] px-2 py-0.5 border border-[var(--color-neon-green)] text-[var(--color-neon-green)] hover:bg-[var(--color-neon-green)] hover:text-black transition-colors font-mono ml-auto">
+          [⛶]
+        </button>
+        <button class="terminal-clear text-[9px] px-2 py-0.5 border border-[var(--color-neon-green)]
+                       text-[var(--color-neon-green)] hover:bg-[var(--color-neon-green)] hover:text-black
+                       transition-colors font-mono ml-2">
+          CLEAR
+        </button>
+      </div>
+
+      <div class="p-4 flex flex-col">
+        <div class="terminal-output flex-1 overflow-y-auto max-h-[200px] mb-3 font-mono text-sm !bg-transparent !border-none !shadow-none"
+             id="terminal-output">
+          <!-- Terminal output lines -->
+        </div>
+
+        <!-- Terminal input -->
+        <div class="terminal-input-line flex items-center gap-2 !border-none !bg-transparent !p-0">
+          <span class="terminal-prompt text-[var(--color-neon-green)] font-mono text-sm">$</span>
+          <input type="text"
+                 class="terminal-input flex-1 bg-transparent border-none
+                        text-[var(--color-text-primary)] font-mono text-sm
+                        focus:ring-0"
+                 placeholder="Type 'help' for available commands..."
+                 autocomplete="off"
+                 spellcheck="false"
+                 id="terminal-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Tools Bar (The part you liked!) -->
+    <div class="quick-tools-grid mt-2">
+      <a href="#" class="tool-btn">nmap</a>
+      <a href="#" class="tool-btn">rustscan</a>
+      <a href="#" class="tool-btn">gobuster</a>
+      <a href="#" class="tool-btn">sqlmap</a>
+      <a href="#" class="tool-btn">hydra</a>
+      <a href="#" class="tool-btn">msfconsole</a>
+      <a href="#" class="tool-btn">burp</a>
+      <a href="#" class="tool-btn">wireshark</a>
+    </div>
+  </div>
+</main>
+
+
+    <!-- Terminal Fullscreen -->
+    <div id="terminal-fullscreen-modal" class="hidden fixed inset-0 bg-black z-50 flex flex-col">
+      <div class="flex justify-between items-center p-4 border-b border-[var(--color-neon-green)]">
+        <span class="text-[var(--color-neon-green)] font-mono text-sm">TERMINAL [FULLSCREEN]</span>
+        <button id="terminal-exit-fullscreen" class="text-[var(--color-neon-green)] hover:text-[var(--color-red)] text-lg">✕</button>
+      </div>
+      <div class="flex-1 flex flex-col p-4 overflow-hidden">
+        <div id="terminal-fullscreen-output" class="flex-1 overflow-y-auto font-mono text-sm text-[var(--color-text-primary)] mb-4">
+          <!-- Output -->
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[var(--color-neon-green)]">$</span>
+          <input type="text" id="terminal-fullscreen-input" class="flex-1 bg-transparent border-none text-[var(--color-text-primary)] font-mono focus:ring-0" autocomplete="off" spellcheck="false">
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- Footer Component -->
+<footer class="footer bg-[var(--color-bg-body)] border-t border-[var(--color-border-subtle)] mt-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex flex-col items-center justify-center gap-2">
+      <!-- Quote -->
+      <p class="quote text-[var(--color-text-muted)] italic font-medium mb-2">
+        "Adapting the light, securing the data, mastering the hunt."
+      </p>
+
+      <!-- Hardware Hook -->
+      <div class="flex items-center justify-center gap-3 mb-2 text-[10px] font-mono tracking-[0.2em] uppercase">
+        <span class="text-[var(--color-text-muted)]">Hardware_Status:</span>
+        <div class="flex gap-1">
+          <div class="w-3 h-1 bg-[var(--color-cyan)] shadow-[0_0_8px_var(--color-cyan)]"></div>
+          <div class="w-3 h-1 bg-[var(--color-magenta)] shadow-[0_0_8px_var(--color-magenta)]"></div>
+          <div class="w-3 h-1 bg-[var(--color-neon-green)] shadow-[0_0_8px_var(--color-neon-green)]"></div>
+        </div>
+        <span class="text-[var(--color-text-accent)]">RGB_SYNC [openrgb]</span>
+      </div>
+
+      <!-- Status Text -->
+      <div class="text-[var(--color-text-muted)] text-[10px] font-bold tracking-widest opacity-60">
+        il1v3y.Cyber_Arsenal v2.0 | Identity_Verified: Root_Operator
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="text-[var(--color-text-muted)] text-xs opacity-70">
+        ⚠️ All tools and techniques are for educational purposes only
+      </div>
+
+      <!-- Shortcuts -->
+      <div class="shortcuts flex flex-wrap justify-center gap-4 md:gap-8 mt-4">
+        <div class="shortcut flex items-center gap-2">
+          <kbd class="px-2 py-1 bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+                       rounded text-xs font-mono">o</kbd>
+          <span class="text-[var(--color-text-muted)] text-sm">open</span>
+        </div>
+        <div class="shortcut flex items-center gap-2">
+          <kbd class="px-2 py-1 bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+                       rounded text-xs font-mono">t</kbd>
+          <span class="text-[var(--color-text-muted)] text-sm">new_tab</span>
+        </div>
+        <div class="shortcut flex items-center gap-2">
+          <kbd class="px-2 py-1 bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+                       rounded text-xs font-mono">ts</kbd>
+          <span class="text-[var(--color-text-muted)] text-sm">toggle_js</span>
+        </div>
+        <div class="shortcut flex items-center gap-2">
+          <kbd class="px-2 py-1 bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+                       rounded text-xs font-mono">;</kbd>
+          <span class="text-[var(--color-text-muted)] text-sm">hints</span>
+        </div>
+        <div class="shortcut flex items-center gap-2">
+          <kbd class="px-2 py-1 bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+                       rounded text-xs font-mono">,m</kbd>
+          <span class="text-[var(--color-text-muted)] text-sm">mpv</span>
+        </div>
+        <div class="shortcut flex items-center gap-2">
+          <kbd class="px-2 py-1 bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+                       rounded text-xs font-mono">,h</kbd>
+          <span class="text-[var(--color-text-muted)] text-sm">home</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+    <!-- JavaScript - Dashboard Initialization -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="./js/dashboard-init.js"></script>
+
+</body>
+</html>

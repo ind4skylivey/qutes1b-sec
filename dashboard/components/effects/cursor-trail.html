@@ -1,0 +1,27 @@
+<!-- Cursor Trail Effect -->
+<div id="cursor-trail" class="cursor-trail"></div>
+
+<script type="module">
+const trails = [];
+const maxTrails = 20;
+
+document.addEventListener('mousemove', (e) => {
+  const trail = document.createElement('div');
+  trail.className = 'cursor-trail';
+  trail.style.left = e.pageX + 'px';
+  trail.style.top = e.pageY + 'px';
+  document.body.appendChild(trail);
+
+  trails.push(trail);
+
+  if (trails.length > maxTrails) {
+    const oldTrail = trails.shift();
+    oldTrail.remove();
+  }
+
+  setTimeout(() => {
+    trail.style.opacity = '0';
+    setTimeout(() => trail.remove(), 500);
+  }, 100);
+});
+</script>

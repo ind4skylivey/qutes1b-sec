@@ -1,0 +1,28 @@
+<!-- TODO List Component -->
+<div class="panel-content">
+  <div class="todo-container">
+    <!-- TODO items will be loaded from localStorage -->
+    <div id="todo-list" class="space-y-2">
+      <!-- TODO items rendered here -->
+    </div>
+
+    <!-- Add TODO input -->
+    <div class="flex gap-2 mt-3">
+      <input type="text"
+             class="todo-input flex-1 px-3 py-2 rounded bg-[var(--color-bg-body)] border border-[var(--color-border-subtle)]
+                    text-[var(--color-text-primary)] font-mono text-sm
+                    placeholder:text-[var(--color-text-muted)]/50
+                    focus:border-[var(--color-text-accent)]
+                    focus:ring-0 transition-colors duration-200"
+             placeholder=">_ ADD_NEW_MISSION..."
+             id="todo-input"
+             maxlength="50">
+      <button class="todo-add-btn bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+                     text-[var(--color-text-accent)] px-4 py-2 rounded
+                     hover:bg-[var(--color-text-accent)] hover:text-[var(--color-bg-body)]
+                     transition-colors duration-200 font-mono text-sm font-bold">
+        ADD
+      </button>
+    </div>
+  </div>
+</div>

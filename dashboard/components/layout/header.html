@@ -1,0 +1,52 @@
+<!-- Header Component -->
+<header class="header sticky top-0 z-40 bg-[var(--color-bg-body)] border-b border-[var(--color-border-subtle)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex flex-col items-center justify-between gap-4">
+      <!-- Title Section -->
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-[var(--color-text-primary)]
+                    mb-2 animate-fade-in">
+          S1BGr0up
+        </h1>
+        <p class="text-[var(--color-text-muted)] text-sm md:text-base">
+          Cyber Security Research Group
+        </p>
+      </div>
+
+      <!-- Status Bar -->
+      <div class="flex flex-wrap items-center justify-center gap-4 md:gap-8
+                  text-xs md:text-sm font-mono">
+        <div class="status-item flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-text-accent)] animate-pulse-glow"></span>
+          <span class="text-[var(--color-text-muted)]">STATUS:</span>
+          <span class="text-[var(--color-text-primary)]">OPERATIONAL</span>
+        </div>
+
+        <div class="status-item flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-text-accent)]"></span>
+          <span class="text-[var(--color-text-muted)]">VPN:</span>
+          <span class="text-[var(--color-text-primary)]">ACTIVE</span>
+        </div>
+
+        <div class="status-item flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-text-accent)]"></span>
+          <span class="text-[var(--color-text-muted)]">LOCATION:</span>
+          <span class="text-[var(--color-text-primary)]">CLASSIFIED</span>
+        </div>
+
+        <div class="clock-display" id="clock" class="text-[var(--color-text-accent)]">
+          --:--:--
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="badge variant='oscp'">OSCP CERTIFIED</span>
+        <span class="badge variant='redteam'">RED TEAM</span>
+        <span class="badge variant='rust'">RUST</span>
+        <span class="badge">S1B-TEAM</span>
+        <span class="badge">C2 DEV</span>
+      </div>
+    </div>
+  </div>
+</header>

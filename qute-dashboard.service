@@ -1,0 +1,13 @@
+[Unit]
+Description=Qutebrowser Dashboard HTTP Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.config/qutebrowser
+ExecStart=/usr/bin/python3 -m http.server 9999
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

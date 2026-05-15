@@ -1,0 +1,21 @@
+<!-- Search Bar Component -->
+<div class="search-container relative">
+  <input type="text"
+         class="search-box w-full px-4 py-3 rounded-lg
+                bg-[var(--color-bg-body)] border border-[var(--color-border-subtle)]
+                text-[var(--color-text-primary)] font-mono text-base
+                placeholder:text-[var(--color-text-muted)]/50
+                focus:border-[var(--color-text-accent)]
+                focus:ring-0 transition-colors duration-200"
+         placeholder=">_ SEARCH_DUCKDUCKGO_OR_TYPE_COMMAND..."
+         id="search"
+         autocomplete="off"
+         spellcheck="false">
+
+  <!-- Command Suggestions Dropdown -->
+  <div class="command-suggestions absolute top-full left-0 right-0 mt-2
+             bg-[var(--color-bg-panel)] border border-[var(--color-border-subtle)]
+             rounded-lg max-h-60 overflow-y-auto z-50 hidden">
+    {% suggestions %}
+  </div>
+</div>

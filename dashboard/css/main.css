@@ -1,0 +1,703 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   ⚡ PROFESSIONAL CYBERPUNK THEME
+   Clean, Balanced & Premium Design
+   ======================================== */
+
+:root {
+    /* Background Colors */
+    --color-bg-body: #050508;
+    --color-bg-panel: rgba(10, 10, 15, 0.85);
+    --color-bg-card: rgba(12, 12, 20, 0.7);
+
+    /* Color Palette - Higher Contrast + Red Accents */
+    --color-cyan: #00e5ff;          /* Vibrant Cyan */
+    --color-magenta: #ff00ff;       /* Pure Magenta */
+    --color-neon-green: #39ff14;    /* Matrix Green */
+    --color-red: #ff2a2a;           /* Tactical Red */
+    --color-purple: #9d50ff;        /* Electric Purple */
+    --color-pink: #ff4081;
+    --color-electric-blue: #2979ff;
+    --color-amber: #ffab40;
+
+    /* Border Colors */
+    --color-border-subtle: rgba(0, 229, 255, 0.1);
+    --color-border-accent: var(--color-cyan);
+    --color-border-red: var(--color-red);
+
+    /* Text Colors */
+    --color-text-primary: #ffffff;
+    --color-text-muted: #78909c;
+    --color-text-accent: var(--color-cyan);
+    --color-text-red: var(--color-red);
+
+    /* Typography */
+    --font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+
+    /* Border Radius - Sharper */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+/* Light Theme Variables */
+html.light-theme {
+    --color-bg-body: #f5f5f5;
+    --color-bg-panel: rgba(255, 255, 255, 0.9);
+    --color-bg-card: rgba(255, 255, 255, 0.8);
+    --color-border-subtle: rgba(0, 100, 150, 0.15);
+    --color-text-primary: #1a1a1a;
+    --color-text-muted: #666666;
+    --glass-bg: rgba(0, 0, 0, 0.02);
+    --glass-border: rgba(0, 0, 0, 0.05);
+}
+
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+/* ========================================
+   🌐 GLOBAL STYLES - ULTRA VIBRANT
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background:
+        radial-gradient(circle at 10% 20%, rgba(77, 208, 225, 0.08) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(186, 104, 200, 0.08) 0%, transparent 20%),
+        var(--color-bg-body);
+    background-attachment: fixed;
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Animated Background Gradient - PROFESSIONAL & SUBTLE */
+body::after {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(
+            circle at 30% 30%,
+            rgba(77, 208, 225, 0.03) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 70% 70%,
+            rgba(186, 104, 200, 0.03) 0%,
+            transparent 50%
+        );
+    animation: gradient-shift 30s ease infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ========================================
+   📜 CUSTOM SCROLLBAR - Neon Cyberpunk
+   ======================================== */
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.9);
+    border-left: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        180deg,
+        var(--color-cyan) 0%,
+        var(--color-purple) 50%,
+        var(--color-magenta) 100%
+    );
+    border-radius: var(--radius-sm);
+    box-shadow:
+        0 0 20px rgba(0, 255, 255, 0.8),
+        0 0 40px rgba(255, 0, 255, 0.4),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(0, 255, 255, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        180deg,
+        var(--color-neon-green) 0%,
+        var(--color-cyan) 50%,
+        var(--color-electric-blue) 100%
+    );
+    box-shadow:
+        0 0 30px rgba(57, 255, 20, 1),
+        0 0 60px rgba(0, 255, 255, 0.6),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
+    transform: scaleX(1.1);
+}
+
+/* ========================================
+   ✨ SELECTION & FOCUS STATES - NEON ENHANCED
+   ======================================== */
+
+::selection {
+    background: var(--color-cyan);
+    color: #000;
+    text-shadow:
+        0 0 15px rgba(0, 255, 255, 1),
+        0 0 30px rgba(0, 255, 255, 0.6);
+}
+
+::-moz-selection {
+    background: var(--color-cyan);
+    color: #000;
+    text-shadow:
+        0 0 15px rgba(0, 255, 255, 1),
+        0 0 30px rgba(0, 255, 255, 0.6);
+}
+
+a:focus,
+button:focus,
+input:focus,
+textarea:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(0, 255, 255, 0.5),
+        0 0 30px rgba(0, 255, 255, 0.6),
+        0 0 60px rgba(0, 255, 255, 0.3);
+    border-color: var(--color-cyan) !important;
+}
+
+/* ========================================
+   🎭 TACTICAL CARDS
+   ======================================== */
+
+.panel-card {
+    background: rgba(5, 5, 8, 0.8) !important;
+    border: 1px solid var(--color-cyan) !important;
+    border-radius: 2px !important;
+    padding: 0 !important;
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.panel-card:hover {
+    border-color: var(--color-red) !important;
+    box-shadow: 0 0 15px rgba(255, 42, 42, 0.2);
+}
+
+.card-header {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 229, 255, 0.05);
+}
+
+.card-header .title-icon {
+    color: var(--color-cyan);
+    font-weight: 900;
+}
+
+.card-header .title-text {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-text-primary);
+}
+
+/* Quick Tools Bar */
+.quick-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 4px;
+}
+
+.tool-btn {
+    background: rgba(157, 80, 255, 0.05);
+    border: 1px solid var(--color-purple);
+    color: var(--color-purple);
+    padding: 6px 8px;
+    font-size: 10px;
+    text-align: center;
+    font-family: var(--font-family);
+    transition: all 0.2s ease;
+    text-transform: lowercase;
+}
+
+.tool-btn:hover {
+    background: var(--color-purple);
+    color: #000;
+    box-shadow: 0 0 10px var(--color-purple);
+}
+
+/* ========================================
+   🏷️ BADGES - Clean Style
+   ======================================== */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.8rem;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-cyan);
+    color: var(--color-cyan);
+}
+
+/* ========================================
+   🔗 LINK STYLES - Enhanced Neon
+   ======================================== */
+
+.link-anchor {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.link-anchor::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--color-cyan),
+        var(--color-neon-green),
+        var(--color-magenta)
+    );
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 0 15px var(--color-cyan),
+        0 0 30px var(--color-cyan);
+}
+
+.link-anchor:hover::before {
+    width: 100%;
+}
+
+.link-anchor:hover {
+    text-shadow:
+        0 0 12px rgba(0, 255, 255, 0.8),
+        0 0 24px rgba(0, 255, 255, 0.4);
+    transform: translateX(6px);
+    color: var(--color-neon-green) !important;
+}
+
+/* ========================================
+   ⚡ PROGRESS BARS - Neon Enhanced
+   ======================================== */
+
+.progress-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg,
+        var(--color-neon-green) 0%,
+        var(--color-cyan) 50%,
+        var(--color-electric-blue) 100%
+    );
+    border-radius: var(--radius-sm);
+    box-shadow:
+        0 0 20px rgba(57, 255, 20, 0.8),
+        0 0 40px rgba(0, 255, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.5),
+        transparent
+    );
+    animation: progress-shine 1.5s ease infinite;
+}
+
+/* ========================================
+   🎮 CURSOR & CRT EFFECTS
+   ======================================== */
+
+body {
+    cursor: default;
+}
+
+a, button, input, .link-anchor {
+    cursor: pointer;
+}
+
+/* Subtle CRT Scanline Effect */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.02) 0px,
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    animation: scanline 20s linear infinite;
+}
+
+/* ========================================
+   ✨ ANIMATIONS - Balanced & Smooth
+   ======================================== */
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 10px var(--color-neon-green); }
+    50% { box-shadow: 0 0 20px var(--color-neon-green); }
+}
+
+@keyframes gradient-shift {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(2%, 2%); }
+}
+
+@keyframes scanline {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.8s ease-out;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes progress-shine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(200%);
+    }
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(15px);
+    }
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        filter: brightness(1) drop-shadow(0 0 8px currentColor);
+    }
+    50% {
+        filter: brightness(1.5) drop-shadow(0 0 25px currentColor);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* ========================================
+   🎯 WIDGET SPECIFIC STYLES - Premium
+   ======================================== */
+
+.widget-box {
+    background: linear-gradient(
+        135deg,
+        rgba(0, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.03) 50%,
+        rgba(168, 85, 247, 0.08) 100%
+    );
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 0 20px rgba(0, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.widget-box:hover {
+    border-color: var(--color-cyan);
+    box-shadow:
+        0 0 35px rgba(0, 255, 255, 0.4),
+        0 0 70px rgba(0, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px) scale(1.02);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(168, 85, 247, 0.12) 100%
+    );
+}
+
+.widget-header {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-text-accent);
+    margin-bottom: var(--spacing-xs);
+    text-transform: uppercase;
+    text-shadow:
+        0 0 10px rgba(0, 255, 255, 0.6),
+        0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+/* ========================================
+   🖥️ TERMINAL STYLES - Enhanced
+   ======================================== */
+
+.terminal-input,
+.terminal-output {
+    font-family: var(--font-family);
+    text-shadow:
+        0 0 8px rgba(0, 255, 255, 0.6),
+        0 0 16px rgba(0, 255, 255, 0.3);
+}
+
+.terminal-prompt {
+    color: var(--color-neon-green);
+    text-shadow:
+        0 0 15px rgba(57, 255, 20, 1),
+        0 0 30px rgba(57, 255, 20, 0.6);
+    font-weight: 700;
+}
+
+/* ========================================
+   📱 RESPONSIVE ENHANCEMENTS
+   ======================================== */
+
+@media (max-width: 768px) {
+    .panel-card {
+        padding: var(--spacing-md);
+    }
+
+    body::after {
+        opacity: 0.5;
+    }
+}
+
+/* Tablet Optimization (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .main-grid {
+        gap: 8px !important;
+    }
+    
+    .node-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    .featured-project {
+        gap: 3rem !important;
+    }
+}
+
+/* Light Theme Adjustments */
+html.light-theme {
+    color-scheme: light;
+}
+
+html.light-theme body {
+    background:
+        radial-gradient(circle at 10% 20%, rgba(77, 208, 225, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(186, 104, 200, 0.1) 0%, transparent 20%),
+        #f5f5f5;
+}
+
+html.light-theme .panel-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(0, 100, 150, 0.3) !important;
+}
+
+html.light-theme .widget-box {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.15) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(168, 85, 247, 0.15) 100%) !important;
+    border-color: rgba(0, 100, 150, 0.3) !important;
+}
+
+html.light-theme ::-webkit-scrollbar-track {
+    background: rgba(200, 200, 200, 0.3);
+}
+
+html.light-theme ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #0064a0, #00b4d8);
+}
+/* ========================================
+   🚀 VISUAL NODES - Quick Access
+   ======================================== */
+
+.node-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); /* Force 10 columns for a single line */
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.visual-node {
+    background: rgba(10, 10, 15, 0.4);
+    border: 1px solid rgba(0, 229, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px 4px; /* More compact padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    text-decoration: none;
+    min-height: 70px;
+}
+
+.visual-node:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: var(--color-cyan);
+    background: rgba(0, 229, 255, 0.05);
+    box-shadow: 0 5px 15px rgba(0, 229, 255, 0.1);
+}
+
+.visual-node .node-icon {
+    width: 20px; /* Smaller icons */
+    height: 20px;
+    color: var(--color-cyan);
+    transition: transform 0.3s ease;
+}
+
+.visual-node .node-label {
+    font-size: 8px; /* Slightly smaller text */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    text-align: center;
+    white-space: nowrap; /* Keep it on one line */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.visual-node:hover .node-label {
+    color: var(--color-cyan);
+}
+
+/* Red Variant */
+.visual-node.high-priority {
+    border-color: rgba(255, 42, 42, 0.2);
+}
+
+.visual-node.high-priority .node-icon {
+    color: var(--color-red);
+}
+
+.visual-node.high-priority:hover {
+    border-color: var(--color-red);
+    background: rgba(255, 42, 42, 0.05);
+    box-shadow: 0 10px 20px rgba(255, 42, 42, 0.15);
+}
+
+.visual-node.high-priority:hover .node-label {
+    color: var(--color-red);
+}

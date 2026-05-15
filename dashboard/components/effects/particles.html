@@ -1,0 +1,64 @@
+<!-- Particle System -->
+<canvas id="particles-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+<script type="module">
+class Particle {
+  constructor() {
+    this.x = Math.random() * window.innerWidth;
+    this.y = Math.random() * window.innerHeight;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.size = Math.random() * 2 + 1;
+    this.color = Math.random() > 0.5 ? '#ff003c' : '#00ffff';
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
+    if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
+  }
+
+  draw(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+export function initParticles() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const particleCount = 30;
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(particle => {
+      particle.update();
+      particle.draw(ctx);
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // Handle resize
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+}
+</script>
