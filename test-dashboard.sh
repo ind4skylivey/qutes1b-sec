@@ -1,14 +1,16 @@
 #!/bin/bash
 # Quick test script for Qutebrowser Dashboard
 
+set -euo pipefail
+
 echo "🧪 Testing Qutebrowser Dashboard"
 echo "================================="
 echo ""
 
 # Test 1: Server Running
 echo "✅ Test 1: Checking if server is running..."
-if ps aux | grep -v grep | grep "python3 -m http.server 9999" > /dev/null; then
-    PID=$(ps aux | grep -v grep | grep 'python3 -m http.server 9999' | awk '{print $2}')
+if pgrep -f "dashboard-server.py" > /dev/null; then
+    PID=$(pgrep -f "dashboard-server.py")
     echo "   ✓ Server running (PID: $PID)"
 else
     echo "   ✗ Server not running!"
@@ -28,8 +30,9 @@ echo ""
 
 # Test 3: Dashboard File Exists
 echo "✅ Test 3: Checking if dashboard file exists..."
-if [ -f ~/.config/qutebrowser/dashboard/index.html ]; then
-    SIZE=$(wc -c < ~/.config/qutebrowser/dashboard/index.html)
+DASHBOARD_HTML="${HOME}/.config/qutebrowser/dashboard/index.html"
+if [ -f "$DASHBOARD_HTML" ]; then
+    SIZE=$(wc -c < "$DASHBOARD_HTML")
     echo "   ✓ index.html exists ($SIZE bytes)"
 else
     echo "   ✗ index.html not found!"
@@ -39,10 +42,11 @@ echo ""
 
 # Test 4: Dashboard Accessible
 echo "✅ Test 4: Testing if dashboard is accessible..."
-if curl -s -o /dev/null -w "%{http_code}" http://localhost:9999/dashboard/index.html | grep -q "200"; then
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9999/dashboard/index.html)
+if [ "$HTTP_CODE" = "200" ]; then
     echo "   ✓ Dashboard is accessible (HTTP 200)"
 else
-    echo "   ✗ Dashboard not accessible!"
+    echo "   ✗ Dashboard not accessible! (HTTP $HTTP_CODE)"
     exit 1
 fi
 echo ""
@@ -63,10 +67,11 @@ MODULES=("main.js" "utils.js" "clocks.js" "terminal.js" "todo.js" "widgets.js" "
 ALL_OK=true
 
 for module in "${MODULES[@]}"; do
-    if curl -s -o /dev/null -w "%{http_code}" http://localhost:9999/dashboard/js/$module | grep -q "200"; then
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:9999/dashboard/js/$module")
+    if [ "$HTTP_CODE" = "200" ]; then
         echo "   ✓ $module accessible"
     else
-        echo "   ✗ $module NOT accessible!"
+        echo "   ✗ $module NOT accessible! (HTTP $HTTP_CODE)"
         ALL_OK=false
     fi
 done
@@ -78,10 +83,11 @@ echo ""
 
 # Test 7: CSS File
 echo "✅ Test 7: Checking CSS file..."
-if curl -s -o /dev/null -w "%{http_code}" http://localhost:9999/dashboard/css/main.css | grep -q "200"; then
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9999/dashboard/css/main.css)
+if [ "$HTTP_CODE" = "200" ]; then
     echo "   ✓ main.css accessible"
 else
-    echo "   ✗ main.css NOT accessible!"
+    echo "   ✗ main.css NOT accessible! (HTTP $HTTP_CODE)"
     exit 1
 fi
 echo ""
