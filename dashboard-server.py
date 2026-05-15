@@ -25,8 +25,14 @@ def sanitize_path(requested_path: str) -> Path | None:
     Sanitize and validate requested path to prevent directory traversal.
     Returns resolved Path if valid, None if path traversal detected.
     """
-    # Decode URL-encoded characters (e.g., %2f -> /)
-    decoded = unquote(requested_path).lstrip('/')
+    # Decode URL-encoded characters multiple times to prevent double-encoding bypass
+    decoded = requested_path
+    for _ in range(3):  # Decode up to 3 times
+        prev = decoded
+        decoded = unquote(decoded)
+        if decoded == prev:
+            break
+    decoded = decoded.lstrip('/')
     
     # Reject paths with traversal patterns
     if '..' in decoded.split('/') or '..' in decoded.split('\\'):
