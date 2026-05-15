@@ -3,6 +3,37 @@
  * Simple, direct initialization without modules
  */
 
+// ===== SECURITY: HTML ESCAPING =====
+function escapeHTML(str) {
+  if (typeof str !== 'string') return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ===== LOGGER =====
+const logger = {
+  debug: (...args) => console.debug('[Dashboard]', ...args),
+  info: (...args) => console.info('[Dashboard]', ...args),
+  warn: (...args) => console.warn('[Dashboard]', ...args),
+  error: (...args) => console.error('[Dashboard]', ...args)
+};
+
+// ===== FETCH WITH TIMEOUT =====
+async function fetchWithTimeout(url, options = {}, timeout = 10000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    return response;
+  } catch (error) {
+    if (error.name === 'AbortError') throw new Error(`Request timed out after ${timeout}ms`);
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 // ===== CLOCKS =====
 function initClocks() {
   function updateClocks() {
@@ -77,15 +108,17 @@ function initSystemStats() {
       }
 
       if (hardwareInfo && hardware) {
+        const cpuText = escapeHTML(hardware.cpu || 'Unknown');
+        const gpuText = escapeHTML((hardware.gpu || []).join(' | ') || 'Unknown');
         hardwareInfo.innerHTML = `
           <div class="text-xs text-[var(--color-text-muted)] space-y-1">
-            <div><span class="text-[var(--color-cyan)]">CPU:</span> ${hardware.cpu}</div>
-            <div><span class="text-[var(--color-cyan)]">GPU:</span> ${hardware.gpu.join(' | ')}</div>
+            <div><span class="text-[var(--color-cyan)]">CPU:</span> ${cpuText}</div>
+            <div><span class="text-[var(--color-cyan)]">GPU:</span> ${gpuText}</div>
           </div>
         `;
       }
     } catch (error) {
-      console.error('Error fetching system stats:', error);
+      logger.error('Error fetching system stats:', error);
     }
   }
 
@@ -286,7 +319,7 @@ function initTerminal() {
     line.className = "mb-2";
 
     if (isCommand) {
-      line.innerHTML = `<span class="text-[var(--color-neon-green)]">root@S1BGr0up:~#</span> <span class="text-[var(--color-text-primary)]">${content}</span>`;
+      line.innerHTML = `<span class="text-[var(--color-neon-green)]">root@S1BGr0up:~#</span> <span class="text-[var(--color-text-primary)]">${escapeHTML(content)}</span>`;
     } else {
       line.innerHTML = content;
     }
@@ -320,7 +353,7 @@ function initTerminal() {
       }
     } else if (trimmedCmd) {
       addOutput(
-        `<div class="text-red-400">Command not found: ${trimmedCmd}. Type 'help' for available commands.</div>`,
+        `<div class="text-red-400">Command not found: ${escapeHTML(trimmedCmd)}. Type 'help' for available commands.</div>`,
       );
     }
 
@@ -336,7 +369,7 @@ function initTerminal() {
 
     if (filtered.length > 0 && input.length > 0) {
       suggestionBox.innerHTML = filtered
-        .map(cmd => `<div class="p-1 hover:bg-[var(--color-cyan)]/20 cursor-pointer" data-cmd="${cmd}">${cmd}</div>`)
+        .map(cmd => `<div class="p-1 hover:bg-[var(--color-cyan)]/20 cursor-pointer" data-cmd="${escapeHTML(cmd)}">${escapeHTML(cmd)}</div>`)
         .join('');
       suggestionBox.classList.remove('hidden');
 
@@ -440,7 +473,7 @@ function initIntelStream() {
       : eventData.type === "SYSTEM" ? "text-[var(--color-cyan)]"
       : "text-[var(--color-text-muted)]";
 
-    entry.innerHTML = `<span class="opacity-40">[${time}]</span> <span class="${colorClass} font-bold">[${eventData.type}]</span> ${eventData.msg}`;
+    entry.innerHTML = `<span class="opacity-40">[${time}]</span> <span class="${colorClass} font-bold">[${escapeHTML(eventData.type)}]</span> ${escapeHTML(eventData.msg)}`;
     entry.className = "mb-1 border-l-2 border-transparent hover:border-[var(--color-cyan)] pl-2 transition-all cursor-pointer";
 
     stream.prepend(entry);

@@ -86,7 +86,7 @@ const COMMANDS = {
         usage: 'theme [theme_name]',
         action: showTheme
     },
-    clear: {
+clear: {
         description: 'Clear terminal output',
         usage: 'clear',
         action: clearTerminal
@@ -614,9 +614,9 @@ function filterCommands(query) {
 
     commandSuggestions.style.display = 'block';
     commandSuggestions.innerHTML = filteredCommands.map(cmd => `
-        <div class="p-2 hover:bg-gray-700 cursor-pointer flex justify-between" data-command="${cmd.name}">
-            <span class="text-yellow-400 font-mono">${cmd.name}</span>
-            <span class="text-gray-400 text-sm">${cmd.description}</span>
+        <div class="p-2 hover:bg-gray-700 cursor-pointer flex justify-between" data-command="${escapeHtml(cmd.name)}">
+            <span class="text-yellow-400 font-mono">${escapeHtml(cmd.name)}</span>
+            <span class="text-gray-400 text-sm">${escapeHtml(cmd.description)}</span>
         </div>
     `).join('');
 }
@@ -643,9 +643,9 @@ function toggleCommandList() {
     if (terminalState.isCommandListVisible) {
         commandList.style.display = 'block';
         commandList.innerHTML = Object.entries(COMMANDS).map(([name, data]) => `
-            <div class="p-2 hover:bg-gray-700 cursor-pointer flex justify-between" data-command="${name}">
-                <span class="text-yellow-400 font-mono">${name}</span>
-                <span class="text-gray-400 text-sm">${data.description}</span>
+            <div class="p-2 hover:bg-gray-700 cursor-pointer flex justify-between" data-command="${escapeHtml(name)}">
+                <span class="text-yellow-400 font-mono">${escapeHtml(name)}</span>
+                <span class="text-gray-400 text-sm">${escapeHtml(data.description)}</span>
             </div>
         `).join('');
     } else {
