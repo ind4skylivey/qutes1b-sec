@@ -5,7 +5,7 @@ Inlines all template includes
 """
 
 import os
-import re
+from pathlib import Path
 
 # Read all section files
 section_files = [
@@ -25,16 +25,22 @@ section_files = [
 # Read section files content
 sections = {}
 for file in section_files:
-    path = f'./dashboard/{file}'
-    if os.path.exists(path):
-        with open(path, 'r') as f:
-            sections[file] = f.read()
+    path = Path('./dashboard') / file
+    if path.exists():
+        sections[file] = path.read_text()
 
 # Read layout files
-header = open('./dashboard/components/layout/header.html', 'r').read()
-widgets_bar = open('./dashboard/components/layout/widgets-bar.html', 'r').read()
-footer = open('./dashboard/components/layout/footer.html', 'r').read()
-terminal = open('./dashboard/components/interactive/terminal.html', 'r').read()
+layout_files = {
+    'header': Path('./dashboard/components/layout/header.html'),
+    'widgets_bar': Path('./dashboard/components/layout/widgets-bar.html'),
+    'footer': Path('./dashboard/components/layout/footer.html'),
+    'terminal': Path('./dashboard/components/interactive/terminal.html'),
+}
+
+header = layout_files['header'].read_text()
+widgets_bar = layout_files['widgets_bar'].read_text()
+footer = layout_files['footer'].read_text()
+terminal = layout_files['terminal'].read_text()
 
 # Build main grid with sections inline
 main_grid = f'''<!-- Main Grid Layout -->
@@ -59,8 +65,7 @@ main_grid = f'''<!-- Main Grid Layout -->
 </main>'''
 
 # Read main HTML template
-with open('./dashboard/index.html', 'r') as f:
-    html_content = f.read()
+html_content = Path('./dashboard/index.html').read_text()
 
 # Replace includes with actual content
 html_content = html_content.replace("{% include 'components/layout/header.html' %}", header)
@@ -70,8 +75,7 @@ html_content = html_content.replace("{% include 'components/interactive/terminal
 html_content = html_content.replace("{% include 'components/layout/footer.html' %}", footer)
 
 # Write static HTML
-with open('./dashboard/index-static.html', 'w') as f:
-    f.write(html_content)
+Path('./dashboard/index-static.html').write_text(html_content)
 
 print("✅ Static HTML generated: dashboard/index-static.html")
 print(f"✅ Included {len(section_files)} section files")
