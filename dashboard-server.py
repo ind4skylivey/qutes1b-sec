@@ -5,6 +5,7 @@ Serves static files + provides real-time system stats via /api/stats
 """
 
 import os
+import sys
 import json
 import logging
 import psutil
@@ -15,6 +16,14 @@ from urllib.parse import urlparse, unquote
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 logger = logging.getLogger(__name__)
 
 DASHBOARD_DIR = Path(__file__).parent / 'dashboard'
@@ -126,15 +135,16 @@ class DashboardHandler(BaseHTTPRequestHandler):
         self.end_headers()
     
     def log_message(self, format, *args):
-        # Suppress default logging, we use our own logger
-        pass
+        logger.info(f"{self.address_string()} - {format % args}")
 
 if __name__ == '__main__':
+    logger.info("Starting Dashboard Server...")
     server = HTTPServer(('127.0.0.1', 9999), DashboardHandler)
-    logger.info('Dashboard Server running on http://127.0.0.1:9999')
-    logger.info('Serving: /dashboard')
-    logger.info('API: /api/stats')
+    logger.info("🚀 Dashboard Server running on http://127.0.0.1:9999")
+    logger.info("📁 Serving: /dashboard")
+    logger.info("📊 API: /api/stats")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        logger.info('Server stopped')
+        logger.info("Server stopped by user")
+        server.shutdown()

@@ -17,6 +17,11 @@ logger = logging.getLogger(__name__)
 # Only allow requests from localhost
 ALLOWED_ORIGINS = {'http://127.0.0.1:9999', 'http://localhost:9999'}
 
+HARDWARE_INFO = {
+    "cpu": "AMD Ryzen 9 7950X3D (16) @ 5.7GHz",
+    "gpu": ["RTX 4090 24GB", "RX 7900 XTX 24GB", "RX 7900 XTX 24GB"]
+}
+
 class SystemStatsHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
@@ -59,9 +64,10 @@ class SystemStatsHandler(BaseHTTPRequestHandler):
         self.end_headers()
     
     def log_message(self, format, *args):
-        pass  # Silence logs
+        logger.info(f"{self.address_string()} - {format % args}")
 
 if __name__ == '__main__':
+    logger.info("Starting System Stats Server...")
     server = HTTPServer(('127.0.0.1', 5000), SystemStatsHandler)
     logger.info('System Stats Server running on http://127.0.0.1:5000')
     logger.info('Available endpoints: /api/stats')
@@ -69,3 +75,4 @@ if __name__ == '__main__':
         server.serve_forever()
     except KeyboardInterrupt:
         logger.info('Server stopped')
+        server.shutdown()
