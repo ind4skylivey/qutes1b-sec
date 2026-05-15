@@ -35,11 +35,26 @@
         return;
     }
 
-    // Block window.open popups
+    // Block window.open popups - only block unrequested popups
+    // Allow user-initiated popups (click, submit, etc.) for OAuth flows, payment windows, etc.
     const originalOpen = window.open;
+    let userInteracting = false;
+    
+    // Track user interaction to allow legitimate popups
+    ['click', 'submit', 'keydown'].forEach(eventType => {
+        document.addEventListener(eventType, () => {
+            userInteracting = true;
+            setTimeout(() => { userInteracting = false; }, 100);
+        }, true);
+    });
+    
     window.open = function(url, target, features) {
-        console.log('[Popup Blocker] Blocked popup:', url);
-        return null;
+        if (!userInteracting) {
+            console.log('[Popup Blocker] Blocked unrequested popup:', url);
+            return null;
+        }
+        // Allow user-initiated popups (OAuth, payment, etc.)
+        return originalOpen.apply(this, arguments);
     };
 
     // Block window.showModalDialog
@@ -73,9 +88,9 @@
         // Exit intent popups
         '.exit-intent', '.exit-popup', '.exit-modal', '.abandon-popup',
 
-        // General modal overlays
-        '.modal-overlay', '.overlay', '.popup-overlay', '.modal-backdrop',
-        '[class*="overlay"]', '[class*="backdrop"]', '[class*="modal-overlay"]',
+        // General modal overlays - use more specific selectors
+        '.modal-overlay', '.popup-overlay', '.modal-backdrop',
+        '[class*="modal-overlay"]', '[class*="popup-overlay"]',
 
         // Lightbox/Video popups
         '.lightbox', '.video-popup', '.image-popup', '.media-popup',

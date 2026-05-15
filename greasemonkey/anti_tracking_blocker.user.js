@@ -154,20 +154,42 @@
         };
     }
 
-    // Block localStorage tracking
+    // Block localStorage tracking - only block known tracking keys
     function blockLocalStorageTracking() {
         const originalSetItem = Storage.prototype.setItem;
+        const originalGetItem = Storage.prototype.getItem;
+        
+        // Known tracking key prefixes - only these will be blocked
+        const trackingKeyPrefixes = [
+            '_ga', '_gid', '_gat', 'ga_', 'gtm_', 'gtag_',
+            'fb_', '_fbp', '_fbc', 'fbp_', 'fbc_',
+            'amplitude_', 'mixpanel_', 'mp_',
+            'ajs_', 'segment_', 'hubspotutk',
+            '__hstc', '__hssc', '__hssrc',
+            '_uetsid', '_uetvid', 'MUID',
+        ];
+        
         Storage.prototype.setItem = function(key, value) {
-            const trackingKeys = [
-                'ga_', 'gtm_', 'fb_', 'fbp_', '_fbp', '_fbc',
-                '_ga', '_gid', '_gat', 'amplitude_', 'mixpanel_',
-            ];
-            const isTracking = trackingKeys.some(k => key.startsWith(k));
+            const keyLower = String(key).toLowerCase();
+            const isTracking = trackingKeyPrefixes.some(prefix => 
+                keyLower.startsWith(prefix.toLowerCase())
+            );
             if (isTracking) {
                 console.log('[Anti-Tracking] Blocked localStorage tracking:', key);
                 return;
             }
             return originalSetItem.apply(this, arguments);
+        };
+        
+        Storage.prototype.getItem = function(key) {
+            const keyLower = String(key).toLowerCase();
+            const isTracking = trackingKeyPrefixes.some(prefix => 
+                keyLower.startsWith(prefix.toLowerCase())
+            );
+            if (isTracking) {
+                return null;
+            }
+            return originalGetItem.apply(this, arguments);
         };
     }
 
