@@ -225,7 +225,6 @@ c.bindings.commands['normal'] = {
     ',m': 'spawn mpv {url}',
     ',d': 'spawn yt-dlp {url}',
     ',s': 'spawn streamlink {url} best',        # ← streamlink
-    ',v': 'open https://piped.video',           # ← quick access to Piped
     ',p': 'spawn zathura {url}',
     ',h': 'open http://localhost:9999/dashboard/index.html',
 }
@@ -403,7 +402,6 @@ c.aliases = {
     'mpv': 'spawn mpv {url}',
     'dl': 'spawn yt-dlp {url}',
     'sl': 'spawn streamlink {url} best',        # ← streamlink alias
-    'piped': 'open https://piped.video',        # ← open Piped
     'home': 'open http://localhost:9999/dashboard/index.html',
 }
 
