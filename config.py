@@ -67,6 +67,12 @@ c.content.blocking.adblock.lists = [
     'https://easylist.to/easylist/easylist.txt',
     'https://easylist.to/easylist/easyprivacy.txt',
     'https://secure.fanboy.co.nz/fanboy-annoyance.txt',
+    # uAssets filters (YouTube, cosmetic, anti-circumvention)
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt',
+    # uAssets privacy
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt',
+    # uAssets badware (malware/phishing/cryptojacking)
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt',
 ]
 
 # Hosts blocking
@@ -218,6 +224,8 @@ c.bindings.commands['normal'] = {
     # External commands
     ',m': 'spawn mpv {url}',
     ',d': 'spawn yt-dlp {url}',
+    ',s': 'spawn streamlink {url} best',        # ← streamlink
+    ',v': 'open https://piped.video',           # ← quick access to Piped
     ',p': 'spawn zathura {url}',
     ',h': 'open http://localhost:9999/dashboard/index.html',
 }
@@ -244,7 +252,7 @@ c.bindings.commands['command'] = {
 
 # Insert mode
 c.bindings.commands['insert'] = {
-    '<Ctrl-e>': 'open-editor',
+    '<Ctrl-o>': 'open-editor',                  # ← moved from <Ctrl-e> to avoid collision
     '<Escape>': 'mode-leave',
     '<Ctrl-a>': 'fake-key <Home>',
     '<Ctrl-e>': 'fake-key <End>',
@@ -390,9 +398,12 @@ c.aliases = {
     'bmd': 'bookmark-del',
     'bml': 'bookmark-list',
     'bms': 'bookmark-load',
-    'adblock-update': 'adblock-update',
+    'au': 'adblock-update',                     # ← short alias for adblock update
+    'gm-reload': 'greasemonkey-reload',         # ← reload greasemonkey scripts
     'mpv': 'spawn mpv {url}',
     'dl': 'spawn yt-dlp {url}',
+    'sl': 'spawn streamlink {url} best',        # ← streamlink alias
+    'piped': 'open https://piped.video',        # ← open Piped
     'home': 'open http://localhost:9999/dashboard/index.html',
 }
 
